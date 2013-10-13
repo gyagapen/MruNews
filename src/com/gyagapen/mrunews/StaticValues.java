@@ -97,6 +97,16 @@ public class StaticValues {
 
 		}
 	};
+	
+	public static String lE_MATINAL_CODE = "MAT";
+	private static String LE_MATINAL_NAME = "Le Matinal";
+	private static int LE_MATINAL_IMG = R.drawable.lematinal;
+	private static ArrayList<String> LE_MATINAL_RSS = new ArrayList<String>() {
+		{
+			add("http://www.lematinal.com/feed/index.1.rss");
+
+		}
+	};
 
 
 	
@@ -111,6 +121,10 @@ public class StaticValues {
 		News defiPlusNews = new News(DEFI_PLUS_NAME, DEFI_PLUS_CODE,
 				DEFI_PLUS_RSS, DEFI_PLUS_IMG);
 		newsList.add(defiPlusNews);
+		
+		News leMatinalNews = new News(LE_MATINAL_NAME, lE_MATINAL_CODE,
+				LE_MATINAL_RSS,LE_MATINAL_IMG);
+		newsList.add(leMatinalNews);	
 		
 		News leMauricienNewsEco = new News(LEMAURICIEN_ECONOMIE_NAME, LEMAURICIEN_CODE,
 				LEMAURICIEN_ECONOMIE_RSS,LEMAURICIEN_ECONOMIE_IMG);
