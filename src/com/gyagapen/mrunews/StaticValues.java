@@ -33,11 +33,40 @@ public class StaticValues {
 
 	
 	public static String DEFI_PLUS_CODE = "DFP";
-	private static String DEFI_PLUS_NAME = "Le Défi Groupe";
-	private static int DEFI_PLUS_IMG = R.drawable.defiplus;
-	private static ArrayList<String> DEFI_PLUS_RSS = new ArrayList<String>() {
+	private static String DEFI_PLUS_NAME = "Le Défi Plus";
+	private static int DEFI_PLUS_IMG = R.drawable.defi_plus;
+	private static ArrayList<NewsSubEntry> DEFI_PLUS_SUBMENU = new ArrayList<NewsSubEntry>() {
 		{
-			add("http://www.defimedia.info/defi-plus.feed");
+			add(new NewsSubEntry("> Général","http://www.defimedia.info/defi-plus.feed"));
+			add(new NewsSubEntry("> Actualités","http://www.defimedia.info/defi-plus/dp-actualites.feed"));
+			add(new NewsSubEntry("> Economie","http://www.defimedia.info/defi-plus/dp-economie.feed"));
+			add(new NewsSubEntry("> Education","http://www.defimedia.info/defi-plus/dp-education.feed"));
+			add(new NewsSubEntry("> Enquête","http://www.defimedia.info/defi-plus/dp-enquete.feed"));
+			add(new NewsSubEntry("> Faits Divers","http://www.defimedia.info/defi-plus/dp-faits-divers.feed"));
+			add(new NewsSubEntry("> Interview","http://www.defimedia.info/defi-plus/dp-interview.feed"));
+			add(new NewsSubEntry("> Magazine","http://www.defimedia.info/defi-plus/dp-magazine.feed"));
+			add(new NewsSubEntry("> Travail","http://www.defimedia.info/defi-plus/dp-monde-travail.feed"));
+			add(new NewsSubEntry("> Société","http://www.defimedia.info/defi-plus/dp-societe.feed"));
+			add(new NewsSubEntry("> Tribunal","http://www.defimedia.info/defi-plus/dp-tribunaux.feed"));
+
+		}
+	};
+	
+	private static String DEFI_QUOTIDIEN_NAME = "Le Défi Quotidien";
+	private static int DEFI_QUOTIDIEN_IMG = R.drawable.defiquotidien;
+	private static ArrayList<NewsSubEntry> DEFI_QUOTIDIEN_SUBMENU = new ArrayList<NewsSubEntry>() {
+		{
+			add(new NewsSubEntry("> Général","http://www.defimedia.info/defi-quotidien.feed"));
+			add(new NewsSubEntry("> Actualités","http://www.defimedia.info/defi-quotidien/dq-actualites.feed"));
+			add(new NewsSubEntry("> Economie","http://www.defimedia.info/defi-quotidien/dq-economie.feed"));
+			add(new NewsSubEntry("> Défi Zen","http://www.defimedia.info/defi-quotidien/dq-defi-zen.feed"));
+			add(new NewsSubEntry("> Faits Divers","http://www.defimedia.info/defi-quotidien/dq-faits-divers.feed"));
+			add(new NewsSubEntry("> Interview","http://www.defimedia.info/defi-quotidien/dq-interview.feed"));
+			add(new NewsSubEntry("> Magazine","http://www.defimedia.info/defi-quotidien/dq-magazine.feed"));
+			add(new NewsSubEntry("> Société","http://www.defimedia.info/defi-quotidien/dq-societe.feed"));
+			add(new NewsSubEntry("> Tribunal","http://www.defimedia.info/defi-quotidien/dq-tribunaux.feed"));
+			add(new NewsSubEntry("> Tribune","http://www.defimedia.info/defi-quotidien/dq-tribune.feed"));
+			add(new NewsSubEntry("> Xplik ou k","http://www.defimedia.info/defi-quotidien/dq-xplik-cas.feed"));
 
 		}
 	};
@@ -62,16 +91,20 @@ public class StaticValues {
 		newsList.add(lexpressNews);
 		
 		
-		News defiPlusNews = new News(DEFI_PLUS_NAME, DEFI_PLUS_CODE,
-				DEFI_PLUS_RSS, DEFI_PLUS_IMG);
-		newsList.add(defiPlusNews);
-		
 		News leMatinalNews = new News(LE_MATINAL_NAME, lE_MATINAL_CODE,
 				LE_MATINAL_RSS,LE_MATINAL_IMG);
 		newsList.add(leMatinalNews);	
 		
 		News leMauricienNews = new News(LEMAURICIEN_NAME, LEMAURICIEN_CODE, LEMAURICIEN_IMG, LEMAURICIEN_SUBMENU);
 		newsList.add(leMauricienNews);
+		
+		News defiQuotidienNews = new News(DEFI_QUOTIDIEN_NAME, DEFI_PLUS_CODE,
+				 DEFI_QUOTIDIEN_IMG, DEFI_QUOTIDIEN_SUBMENU);
+		newsList.add(defiQuotidienNews);
+		
+		News defiPlusNews = new News(DEFI_PLUS_NAME, DEFI_PLUS_CODE,
+				 DEFI_PLUS_IMG, DEFI_PLUS_SUBMENU);
+		newsList.add(defiPlusNews);
 		
 
 
