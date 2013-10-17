@@ -15,7 +15,7 @@ public class GridNewsActivity extends Activity {
 	private GridView gridView;
 	
 	static final Integer[] numbers = new Integer[] { 
-		R.drawable.lemauricien_newspaper_eco,
+		R.drawable.lemauricien_newspaper,
 		R.drawable.lexpress_news
 		};
 	

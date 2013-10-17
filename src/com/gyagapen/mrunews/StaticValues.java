@@ -13,80 +13,24 @@ public class StaticValues {
 		}
 	};
 	static String LEXPRESS_CODE = "LEX";
+	
 	static String LEMAURICIEN_CODE = "MAU";
-
-	public static String LEMAURICIEN_ECONOMIE_CODE = LEMAURICIEN_CODE+"ECO";
-	private static String LEMAURICIEN_ECONOMIE_NAME = "Le Mauricien - Economie ";
-	private static int LEMAURICIEN_ECONOMIE_IMG = R.drawable.lemauricien_newspaper_eco;
-	private static ArrayList<String> LEMAURICIEN_ECONOMIE_RSS = new ArrayList<String>() {
+	private static String LEMAURICIEN_NAME = "Le Mauricien ";
+	private static int LEMAURICIEN_IMG = R.drawable.lemauricien_newspaper;
+	private static ArrayList<NewsSubEntry> LEMAURICIEN_SUBMENU = new ArrayList<NewsSubEntry>() {
 		{
-			add("http://www.lemauricien.com/rss/articles/Economie");
+			add(new NewsSubEntry("> Economie","http://www.lemauricien.com/rss/articles/Economie"));
+			add(new NewsSubEntry("> Politique","http://www.lemauricien.com/rss/articles/Politique"));
+			add(new NewsSubEntry("> Faits Divers","http://www.lemauricien.com/rss/articles/Faits%20divers"));
+			add(new NewsSubEntry("> Société","http://www.lemauricien.com/rss/articles/Soci%C3%A9t%C3%A9"));
+			add(new NewsSubEntry("> Magazine","http://www.lemauricien.com/rss/articles/Magazine"));
+			add(new NewsSubEntry("> Sports","http://www.lemauricien.com/rss/articles/Sports"));
+			add(new NewsSubEntry("> Sports","http://www.lemauricien.com/rss/articles/International"));
 
 		}
 	};
+		
 
-	public static String LEMAURICIEN_POLITIQUE_CODE = LEMAURICIEN_CODE+"POL";
-	private static String LEMAURICIEN_POLITIQUE_NAME = "Le Mauricien - Politique";
-	private static int LEMAURICIEN_POLITIQUE_IMG = R.drawable.lemauricien_newspaper_politique;
-	private static ArrayList<String> LEMAURICIEN_POLITIQUE_RSS = new ArrayList<String>() {
-		{
-			add("http://www.lemauricien.com/rss/articles/Politique");
-
-		}
-	};
-
-	public static String LEMAURICIEN_FAITS_CODE = LEMAURICIEN_CODE+"FAITS";
-	private static String LEMAURICIEN_FAITS_NAME = "Le Mauricien - Faits";
-	private static int LEMAURICIEN_FAITS_IMG = R.drawable.lemauricien_newspaper_faits;
-	private static ArrayList<String> LEMAURICIEN_FAITS_RSS = new ArrayList<String>() {
-		{
-			add("http://www.lemauricien.com/rss/articles/Faits%20divers");
-
-		}
-	};
-
-	public static String LEMAURICIEN_SOCIETE_CODE = LEMAURICIEN_CODE+"STE";
-	private static String LEMAURICIEN_SOCIETE_NAME = "Le Mauricien - Societe";
-	private static int LEMAURICIEN_SOCIETE_IMG = R.drawable.lemauricien_newspaper_societe;
-	private static ArrayList<String> LEMAURICIEN_SOCIETE_RSS = new ArrayList<String>() {
-		{
-			add("http://www.lemauricien.com/rss/articles/Soci%C3%A9t%C3%A9");
-
-		}
-	};
-	
-	
-	public static String LEMAURICIEN_MAGAZINE_CODE = LEMAURICIEN_CODE+"MAG";
-	private static String LEMAURICIEN_MAGAZINE_NAME = "Le Mauricien - Magazine";
-	private static int LEMAURICIEN_MAGAZINE_IMG = R.drawable.lemauricien_newspaper_magazine;
-	private static ArrayList<String> LEMAURICIEN_MAGAZINE_RSS = new ArrayList<String>() {
-		{
-			add("http://www.lemauricien.com/rss/articles/Magazine");
-
-		}
-	};
-	
-	
-	public static String LEMAURICIEN_SPORTS_CODE = LEMAURICIEN_CODE+"SP";
-	private static String LEMAURICIEN_SPORTS_NAME = "Le Mauricien - Sports";
-	private static int LEMAURICIEN_SPORTS_IMG = R.drawable.lemauricien_newspaper_sport;
-	private static ArrayList<String> LEMAURICIEN_SPORTS_RSS = new ArrayList<String>() {
-		{
-			add("http://www.lemauricien.com/rss/articles/Sports");
-
-		}
-	};
-	
-	public static String LEMAURICIEN_INTERNATIONAL_CODE = LEMAURICIEN_CODE+"INT";
-	private static String LEMAURICIEN_INTERNATIONAL_NAME = "Le Mauricien - International";
-	private static int LEMAURICIEN_INTERNATIONAL_IMG = R.drawable.lemauricien_newspaper_international;
-	private static ArrayList<String> LEMAURICIEN_INTERNATIONAL_RSS = new ArrayList<String>() {
-		{
-			add("http://www.lemauricien.com/rss/articles/International");
-
-		}
-	};
-	
 	
 	public static String DEFI_PLUS_CODE = "DFP";
 	private static String DEFI_PLUS_NAME = "Le Défi Groupe";
@@ -126,34 +70,10 @@ public class StaticValues {
 				LE_MATINAL_RSS,LE_MATINAL_IMG);
 		newsList.add(leMatinalNews);	
 		
-		News leMauricienNewsEco = new News(LEMAURICIEN_ECONOMIE_NAME, LEMAURICIEN_CODE,
-				LEMAURICIEN_ECONOMIE_RSS,LEMAURICIEN_ECONOMIE_IMG);
-		newsList.add(leMauricienNewsEco);		
+		News leMauricienNews = new News(LEMAURICIEN_NAME, LEMAURICIEN_CODE, LEMAURICIEN_IMG, LEMAURICIEN_SUBMENU);
+		newsList.add(leMauricienNews);
 		
-		News leMauricienNewsFaits = new News(LEMAURICIEN_FAITS_NAME, LEMAURICIEN_CODE,
-				LEMAURICIEN_FAITS_RSS, LEMAURICIEN_FAITS_IMG);
-		newsList.add(leMauricienNewsFaits);
-		
-		News leMauricienNewsSociete = new News(LEMAURICIEN_SOCIETE_NAME, LEMAURICIEN_CODE,
-				LEMAURICIEN_SOCIETE_RSS, LEMAURICIEN_SOCIETE_IMG);
-		newsList.add(leMauricienNewsSociete);
-		
-		News leMauricienNewsPo = new News(LEMAURICIEN_POLITIQUE_NAME, LEMAURICIEN_CODE,
-				LEMAURICIEN_POLITIQUE_RSS, LEMAURICIEN_POLITIQUE_IMG);
-		newsList.add(leMauricienNewsPo);
-		
-		News leMauricienNewsInt = new News(LEMAURICIEN_INTERNATIONAL_NAME, LEMAURICIEN_CODE,
-				LEMAURICIEN_INTERNATIONAL_RSS, LEMAURICIEN_INTERNATIONAL_IMG);
-		newsList.add(leMauricienNewsInt);
-		
-		News leMauricienNewsSports = new News(LEMAURICIEN_SPORTS_NAME, LEMAURICIEN_CODE,
-				LEMAURICIEN_SPORTS_RSS, LEMAURICIEN_SPORTS_IMG);
-		newsList.add(leMauricienNewsSports);
-		
-		News leMauricienNewsMag = new News(LEMAURICIEN_MAGAZINE_NAME, LEMAURICIEN_CODE,
-				LEMAURICIEN_MAGAZINE_RSS, LEMAURICIEN_MAGAZINE_IMG);
-		newsList.add(leMauricienNewsMag);
-		
+
 
 
 		return newsList;

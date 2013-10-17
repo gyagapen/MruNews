@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 public class News {
 
-	String newsName;
-	String newsId;
-	ArrayList<String> newsRssFeeds;
-	int imageRessource;
+	private String newsName;
+	private String newsId;
+	private ArrayList<String> newsRssFeeds;
+	private int imageRessource;
+	private ArrayList<NewsSubEntry> subEntries;
 
 	public News(String newsName, String newsId, ArrayList<String> newsRssFeed, int imgRes) {
 		super();
@@ -15,6 +16,25 @@ public class News {
 		this.newsId = newsId;
 		this.newsRssFeeds = newsRssFeed;
 		imageRessource = imgRes;
+		subEntries = new ArrayList<NewsSubEntry>();
+	}
+
+
+	public News(String newsName, String newsId, int imgRes, ArrayList<NewsSubEntry> subEntries) {
+		super();
+		this.newsName = newsName;
+		this.newsId = newsId;
+		this.newsRssFeeds = new ArrayList<String>();
+		imageRessource = imgRes;
+		this.subEntries =subEntries;
+	}
+	
+	public ArrayList<NewsSubEntry> getSubEntries() {
+		return subEntries;
+	}
+
+	public void setSubEntries(ArrayList<NewsSubEntry> subEntries) {
+		this.subEntries = subEntries;
 	}
 
 	public String getNewsName() {

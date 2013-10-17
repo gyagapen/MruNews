@@ -36,8 +36,10 @@
         <activity
             android:name=".ArticleViewActivity">
         </activity>
+        <activity
+            android:name=".NewsSubMenuActivity">
+        </activity>
         
-            
     </application>
 
 </manifest>

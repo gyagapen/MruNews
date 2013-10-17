@@ -125,13 +125,7 @@ public class NewsListActivity extends Activity {
 		Integer[] leftItems = new Integer[] { R.drawable.lexpress_news,
 				R.drawable.defiplus};
 		Integer[] rightItems = new Integer[] {
-				R.drawable.lemauricien_newspaper_eco,
-				R.drawable.lemauricien_newspaper_faits,
-				R.drawable.lemauricien_newspaper_societe,
-				R.drawable.lemauricien_newspaper_politique,
-				R.drawable.lemauricien_newspaper_international,
-				R.drawable.lemauricien_newspaper_sport,
-				R.drawable.lemauricien_newspaper_magazine};
+};
 
 		leftAdapter = new NewsItemsAdapter(this, R.layout.news_item, leftItems,
 				newsList, 0);

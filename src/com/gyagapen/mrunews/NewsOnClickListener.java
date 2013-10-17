@@ -1,6 +1,9 @@
 package com.gyagapen.mrunews;
 
+import java.io.Serializable;
+
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -19,11 +22,24 @@ public class NewsOnClickListener implements OnClickListener {
 
 	public void onClick(View v) {
 		
-		Intent intent = new Intent(v.getContext(), ArticleListActivity.class);
-		intent.putExtra("rssFeed", newspaper.getNewsRssFeed());
-		intent.putExtra("rssCode", newspaper.getNewsId());
-		intent.putExtra("newsTitle", newspaper.newsName);
-	    v.getContext().startActivity(intent);
+		if (newspaper.getSubEntries().size() == 0)
+		{
+			Intent intent = new Intent(v.getContext(), ArticleListActivity.class);
+			intent.putExtra("rssFeed", newspaper.getNewsRssFeed());
+			intent.putExtra("rssCode", newspaper.getNewsId());
+			intent.putExtra("newsTitle", newspaper.getNewsName());
+			v.getContext().startActivity(intent);
+		}
+		else
+		{
+			
+			Intent intent = new Intent(v.getContext(), NewsSubMenuActivity.class);
+			intent.putExtra("rssFeedList", (Serializable)newspaper.getSubEntries());
+			intent.putExtra("rssCode", newspaper.getNewsId());
+			intent.putExtra("newsTitle", newspaper.getNewsName());
+			v.getContext().startActivity(intent);
+			
+		}
 	}
 
 }
