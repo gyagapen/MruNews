@@ -34,7 +34,10 @@ public class GetImageAsync extends AsyncTask<String, Void, String> {
 		// get images
 		try {
 			imageId = params[0];
-			imageLink = HTMLPageParser.getImageFromLink(params[0], params[1]);
+			if(!isCancelled())
+			{
+				imageLink = HTMLPageParser.getImageFromLink(params[0], params[1], null);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,13 +49,11 @@ public class GetImageAsync extends AsyncTask<String, Void, String> {
 	@Override
 	protected void onPostExecute(String result) {
 
-		if (parentView.getTag().equals(imageId)) {
-			/*aq = new AQuery(parentView);
-			aq.id(R.id.headerImageView).image(result);*/
-			
+		if(!isCancelled())
+		{
+			arrayAdapter.updateArticleLink(position, result);
+			arrayAdapter.setNotifyOnChange(true);
 		}
-		arrayAdapter.updateArticleLink(position, result);
-		arrayAdapter.setNotifyOnChange(true);
 
 	}
 }

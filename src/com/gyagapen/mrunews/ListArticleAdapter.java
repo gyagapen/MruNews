@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.opengl.Visibility;
+import android.preference.PreferenceManager.OnActivityDestroyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 	private String newsName;
 	private AQuery aq;
 	
+	//list of async task
+	private ArrayList<GetImageAsync> asyncTaskList;
 
 	public ListArticleAdapter(ArrayList<ArticleHeader> someArticles, Activity anActivity, String newsName) {
 
@@ -31,6 +34,7 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 		articles = someArticles;
 		activity = anActivity;
 		this.newsName = newsName;
+		asyncTaskList = new ArrayList<GetImageAsync>();
 	}
 
 	public int getCount() {
@@ -54,10 +58,6 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 
 		final LayoutInflater inflater = activity.getLayoutInflater();
 
-		//final View listEntry = inflater.inflate(R.layout.article_entry, null);    // initialize the layout from xml
-		
-		//convertView = null;
-		
 		
 		final ArticleHeader currentEntry = articles.get(position);
 		
@@ -75,6 +75,8 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 			imageView.setTag(currentEntry.getLink());
 			GetImageAsync getImgASync = new GetImageAsync(imageView, this, position);
 			getImgASync.execute(currentEntry.getLink(), currentEntry.getId());
+			
+			asyncTaskList.add(getImgASync);
 			
 			//dummy link
 			currentEntry.setImageLink("dummy");
@@ -104,7 +106,7 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 
 		//add onclick listener
 		ArticleOnClickListener articleClickListener = new ArticleOnClickListener(currentEntry, newsName);
-		articleTitle.setOnClickListener(articleClickListener);
+		convertView.setOnClickListener(articleClickListener);
 		
 		
 
@@ -127,7 +129,17 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 		aq.id(R.id.headerImageView).image(currentEntry.getImageLink());
 	}
 
+	
+	//stop all asynctask
+	public void stopAllASyncTask()
+	{
+		for(int i=0; i<asyncTaskList.size();i++)
+		{
+			asyncTaskList.get(i).cancel(true);
+		}
+	}
 
+	
 
 	@Override
 	public int getPositionForSection(int section) {
@@ -145,9 +157,9 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 	public Object[] getSections() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}  
 
-
+	
 
 
 

@@ -38,7 +38,17 @@ public class RSSReader {
 					.openConnection();
 			// Reading the feed
 			SyndFeedInput input = new SyndFeedInput();
-			SyndFeed feed = input.build(new XmlReader(httpcon));
+			SyndFeed feed =null;
+			try
+			{
+				feed = input.build(new XmlReader(httpcon));
+			}
+			catch (Exception e)
+			{
+				 httpcon = (HttpURLConnection) url
+							.openConnection();
+				 feed = input.build(new XmlReader(httpcon));
+			}
 			List entries = feed.getEntries();
 			Iterator itEntries = entries.iterator();
 
@@ -66,8 +76,11 @@ public class RSSReader {
 
 				articles.add(articleHeader);
 			}
-
+			
+			httpcon.disconnect();
 		}
+		
+		
 
 		return articles;
 	}

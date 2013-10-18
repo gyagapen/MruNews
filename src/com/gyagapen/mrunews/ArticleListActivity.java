@@ -21,6 +21,7 @@ public class ArticleListActivity extends Activity implements Runnable {
 	private ArrayList<String> rssFeed;
 	private String rssId;
 	private ArrayList<ArticleHeader> articleList = null;
+	private ListArticleAdapter listArticleAdapter;
 	// waiting dialog
 	private ProgressDialog progressDialog;
 
@@ -82,7 +83,7 @@ public class ArticleListActivity extends Activity implements Runnable {
 	}
 
 	public void populateArticleList(ArrayList<ArticleHeader> articleList) {
-		ListArticleAdapter listArticleAdapter = new ListArticleAdapter(
+		listArticleAdapter = new ListArticleAdapter(
 				articleList, this, newsTitle);
 		HeaderListView.setAdapter(listArticleAdapter);
 
@@ -122,8 +123,16 @@ public class ArticleListActivity extends Activity implements Runnable {
 	
 	public void finish() {
 	    super.finish();
+	    
+	    //stop asynctask
+	    if(listArticleAdapter != null)
+	    {
+	    	listArticleAdapter.stopAllASyncTask();
+	    }
+	    
 	    //transition animation
 	    overridePendingTransition(R.animator.push_right_in, R.animator.push_right_out);
 	}
+	
 
 }

@@ -68,9 +68,8 @@ public class HTMLPageParser {
 		Document doc = Jsoup.connect(linkToParse).timeout(10 * 2500).get();
 
 		// get image
-		Element imgElement = doc.select("div.main-image img").first();
-		String imgLiString = imgElement.attr("src").toString();
-		artContent.setImageLink(imgLiString);
+		artContent.setImageLink(getImageFromLink(linkToParse,
+				StaticValues.LEMAURICIEN_CODE, doc));
 
 		// get Content
 		Elements ContentElements = doc.select("div.body-content p");
@@ -99,9 +98,6 @@ public class HTMLPageParser {
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 
-		Log.i("IMAGE", "link " + imgLiString);
-		Log.i("CONTENT", content);
-		Log.i("TITLE", title);
 
 		return artContent;
 	}
@@ -114,9 +110,8 @@ public class HTMLPageParser {
 		Document doc = Jsoup.connect(linkToParse).timeout(10 * 2500).get();
 
 		// get image
-		Element imgElement = doc.select("img[src]").first();
-		String imgLiString = imgElement.attr("src").toString();
-		artContent.setImageLink(imgLiString);
+		artContent.setImageLink(getImageFromLink(linkToParse,
+				StaticValues.LEXPRESS_CODE, doc));
 
 		// get Content
 		Elements ContentElements = doc.select(".field-name-body p");
@@ -126,6 +121,18 @@ public class HTMLPageParser {
 			content += System.getProperty("line.separator")
 					+ ContentElements.get(i).text();
 		}
+		
+		//fallback
+		if(content.trim().length() < 10)
+		{
+			ContentElements = doc.select(".field-name-body div.field-item div");
+			for (int i = 0; i < ContentElements.size(); i++) {
+
+				content += System.getProperty("line.separator")
+						+ ContentElements.get(i).text();
+			}
+		}
+		
 		artContent.setContent(content);
 
 		// get Title
@@ -163,10 +170,6 @@ public class HTMLPageParser {
 			artContent.addComment(artComment);
 		}
 
-		Log.i("IMAGE", "link " + imgLiString);
-		Log.i("CONTENT", content);
-		Log.i("TITLE", title);
-
 		return artContent;
 	}
 
@@ -179,7 +182,7 @@ public class HTMLPageParser {
 
 		// get image
 		artContent.setImageLink(getImageFromLink(linkToParse,
-				StaticValues.DEFI_PLUS_CODE));
+				StaticValues.DEFI_PLUS_CODE, doc));
 
 		// get Content
 		Element IntroElement = doc.select("div.itemIntroText").first();
@@ -224,7 +227,7 @@ public class HTMLPageParser {
 
 		// get image
 		artContent.setImageLink(getImageFromLink(linkToParse,
-				StaticValues.lE_MATINAL_CODE));
+				StaticValues.lE_MATINAL_CODE, doc));
 
 		// get Content
 
@@ -258,40 +261,35 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
-	public static String getImageFromLink(String url, String newsCode)
+	public static String getImageFromLink(String url, String newsCode, Document doc)
 			throws IOException {
 		String imageLink = "";
 
 		try {
+			
+			//get page content if not given
+			if(doc == null)
+			{
+				doc = Jsoup.connect(url).timeout(10 * 2500).get();
+			}
 
 			if (newsCode.equals(StaticValues.LEMAURICIEN_CODE)) {
-				// get page content
-				Document doc = Jsoup.connect(url).timeout(10 * 2500).get();
 
 				// get image
 				Element imgElement = doc.select("div.main-image img").first();
 				imageLink = imgElement.attr("src").toString();
 			} else if (newsCode.equals(StaticValues.LEXPRESS_CODE)) {
-				// get page content
-				Document doc = Jsoup.connect(url).timeout(10 * 2500).get();
-
 				// get image
 				Element imgElement = doc.select("img[src]").first();
 				imageLink = imgElement.attr("src").toString();
 
 			} else if (newsCode.equals(StaticValues.DEFI_PLUS_CODE)) {
-				// get page content
-				Document doc = Jsoup.connect(url).timeout(10 * 2500).get();
-
 				// get image
 				Element imgElement = doc.select("span.itemImage img[src]")
 						.first();
 				imageLink = "http://www.defimedia.info"
 						+ imgElement.attr("src").toString();
 			} else if (newsCode.equals(StaticValues.lE_MATINAL_CODE)) {
-				// get page content
-				Document doc = Jsoup.connect(url).timeout(10 * 2500).get();
-
 				// get image
 				Element imgElement = doc.select("div.image img[src]").first();
 				imageLink = imgElement.attr("src").toString();
