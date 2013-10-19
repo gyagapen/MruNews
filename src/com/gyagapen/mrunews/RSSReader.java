@@ -20,7 +20,7 @@ import com.google.code.rome.android.repackaged.com.sun.syndication.io.XmlReader;
 public class RSSReader {
 
 	public ArrayList<ArticleHeader> readFeed(ArrayList<String> feedAdresses,
-			String feedTag) throws IOException, IllegalArgumentException,
+			String feedTag, boolean useCache) throws IOException, IllegalArgumentException,
 			FeedException {
 
 		//date formatter
@@ -36,6 +36,12 @@ public class RSSReader {
 			URL url = new URL(feedAdress);
 			HttpURLConnection httpcon = (HttpURLConnection) url
 					.openConnection();
+			
+			//force network response
+			if(!useCache)
+			{
+				httpcon.addRequestProperty("Cache-Control", "no-cache");
+			}
 			// Reading the feed
 			SyndFeedInput input = new SyndFeedInput();
 			SyndFeed feed =null;

@@ -16,6 +16,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 
 public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements ListAdapter, SectionIndexer	{
@@ -121,9 +122,9 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 		currentEntry.setImageLink(imageLink);
 		articles.set(position, currentEntry);
 		
-		ListView listView = (ListView)activity.findViewById(R.id.listViewArticle);
-		View v = listView.getChildAt(position - 
-				listView.getFirstVisiblePosition());
+		PullToRefreshListView listView = (PullToRefreshListView)activity.findViewById(R.id.listViewArticle);
+		View v = listView.getRefreshableView().getChildAt(position - 
+				listView.getRefreshableView().getFirstVisiblePosition());
 		
 		aq = new AQuery(v);
 		aq.id(R.id.headerImageView).image(currentEntry.getImageLink());

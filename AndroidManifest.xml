@@ -31,11 +31,12 @@
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity
-            android:name=".ArticleListActivity">
-            
+            android:name=".ArticleListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity
-            android:name=".ArticleViewActivity">
+            android:name=".ArticleViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <activity
             android:name=".NewsSubMenuActivity">
