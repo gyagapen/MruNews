@@ -124,7 +124,7 @@ public class ListArticleAdapter  extends ArrayAdapter<ArticleHeader> implements 
 		
 		PullToRefreshListView listView = (PullToRefreshListView)activity.findViewById(R.id.listViewArticle);
 		View v = listView.getRefreshableView().getChildAt(position - 
-				listView.getRefreshableView().getFirstVisiblePosition());
+				listView.getRefreshableView().getFirstVisiblePosition()+1);
 		
 		aq = new AQuery(v);
 		aq.id(R.id.headerImageView).image(currentEntry.getImageLink());
