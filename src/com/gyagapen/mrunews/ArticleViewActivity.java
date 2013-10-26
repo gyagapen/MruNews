@@ -7,8 +7,10 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -92,6 +94,13 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		// display waiting dialog
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage("Please wait...");
+		progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ArticleViewActivity.this.finish();
+					}
+				});
 
 		progressDialog.show();
 
@@ -108,6 +117,8 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 					// set number of comments
 					buttonComments.setText(buttonCommentText);
+				} else if (msg.what == 1) {
+					displayErrorMessage("Error while loading the page...");
 				}
 			}
 		};
@@ -155,16 +166,23 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		// getting info to display
 		HTMLPageParser htmlPageParser = new HTMLPageParser(articleLink,
 				articleId);
-		ArticleContent artCont = htmlPageParser.parsePage();
+		ArticleContent artCont;
+		try {
+			artCont = htmlPageParser.parsePage();
 
-		Imagelink = artCont.getImageLink();
-		ArtContent = artCont.getContent();
-		ArtTitle = artCont.getTitle();
-		buttonCommentText = buttonComments.getText() + " ("
-				+ artCont.getComment().size() + ")";
-		artComment = artCont.getComment();
+			Imagelink = artCont.getImageLink();
+			ArtContent = artCont.getContent();
+			ArtTitle = artCont.getTitle();
+			buttonCommentText = buttonComments.getText() + " ("
+					+ artCont.getComment().size() + ")";
+			artComment = artCont.getComment();
 
-		mHandler.sendEmptyMessage(0);
+			mHandler.sendEmptyMessage(0);
+
+		} catch (IOException e) {
+			mHandler.sendEmptyMessage(1);
+		}
+
 		progressDialog.dismiss();
 
 		// animation
@@ -234,10 +252,9 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		popup.setWidth(popupWidth);
 		popup.setHeight(popupHeight);
 		popup.setFocusable(true);
-		
+
 		// Clear the default translucent background
-		   //popup.setBackgroundDrawable(new BitmapDrawable());
-		 
+		// popup.setBackgroundDrawable(new BitmapDrawable());
 
 		// Some offset to align the popup a bit to the right, and a bit down,
 		// relative to button's position.
@@ -260,6 +277,21 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		// dim background
 		frameLayout.getForeground().setAlpha(200);
 
+	}
+
+	public void displayErrorMessage(String text) {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setCancelable(false); // This blocks the 'BACK' button
+		ad.setMessage(text);
+		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Ok",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ArticleViewActivity.this.finish();
+					}
+				});
+
+		ad.show();
 	}
 
 }

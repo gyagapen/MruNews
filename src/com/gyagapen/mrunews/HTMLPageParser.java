@@ -1,6 +1,9 @@
 package com.gyagapen.mrunews;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,17 +12,23 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.util.Log;
+import android.os.StrictMode;
 
 public class HTMLPageParser {
 
 	private String linkToParse;
 	private String parseType;
 
+	static final String PING_HOST_1 = "http://www.google.com/";
+	static final String PING_HOST_2 = "http://fr.yahoo.com/";
+
+	private LogsProvider logsProvider = null;
+
 	public HTMLPageParser(String linkToParse, String parseType) {
 		super();
 		this.linkToParse = linkToParse;
 		this.parseType = parseType;
+		logsProvider = new LogsProvider(null, this.getClass());
 	}
 
 	public String getLinkToParse() {
@@ -38,23 +47,18 @@ public class HTMLPageParser {
 		this.parseType = parseType;
 	}
 
-	public ArticleContent parsePage() {
+	public ArticleContent parsePage() throws IOException {
 		ArticleContent artContent = new ArticleContent();
 
-		try {
+		if (parseType.equals(StaticValues.LEXPRESS_CODE)) {
+			artContent = parseExpressPage();
+		} else if (parseType.equals(StaticValues.LEMAURICIEN_CODE)) {
+			artContent = parseLeMauricienPage();
 
-			if (parseType.equals(StaticValues.LEXPRESS_CODE)) {
-				artContent = parseExpressPage();
-			} else if (parseType.equals(StaticValues.LEMAURICIEN_CODE)) {
-				artContent = parseLeMauricienPage();
-
-			} else if (parseType.equals(StaticValues.DEFI_PLUS_CODE)) {
-				artContent = parseDefiPlusPage();
-			} else if (parseType.equals(StaticValues.lE_MATINAL_CODE)) {
-				artContent = parseLeMatinalPage();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} else if (parseType.equals(StaticValues.DEFI_PLUS_CODE)) {
+			artContent = parseDefiPlusPage();
+		} else if (parseType.equals(StaticValues.lE_MATINAL_CODE)) {
+			artContent = parseLeMatinalPage();
 		}
 
 		return artContent;
@@ -98,7 +102,6 @@ public class HTMLPageParser {
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 
-
 		return artContent;
 	}
 
@@ -121,10 +124,9 @@ public class HTMLPageParser {
 			content += System.getProperty("line.separator")
 					+ ContentElements.get(i).text();
 		}
-		
-		//fallback
-		if(content.trim().length() < 10)
-		{
+
+		// fallback
+		if (content.trim().length() < 10) {
 			ContentElements = doc.select(".field-name-body div.field-item div");
 			for (int i = 0; i < ContentElements.size(); i++) {
 
@@ -132,7 +134,7 @@ public class HTMLPageParser {
 						+ ContentElements.get(i).text();
 			}
 		}
-		
+
 		artContent.setContent(content);
 
 		// get Title
@@ -261,15 +263,14 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
-	public static String getImageFromLink(String url, String newsCode, Document doc)
-			throws IOException {
+	public static String getImageFromLink(String url, String newsCode,
+			Document doc) throws IOException {
 		String imageLink = "";
 
 		try {
-			
-			//get page content if not given
-			if(doc == null)
-			{
+
+			// get page content if not given
+			if (doc == null) {
 				doc = Jsoup.connect(url).timeout(10 * 2500).get();
 			}
 
@@ -300,6 +301,41 @@ public class HTMLPageParser {
 		}
 
 		return imageLink;
+	}
+
+	static public boolean isInternetConnectionAvailable(
+			LogsProvider logsProvider) {
+		boolean isInternetAvailaible = false;
+
+		// avoid androidblockguard policy error
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+					.permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+		}
+
+		URL url;
+		try {
+			url = new URL(PING_HOST_1);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			// 3 seconds time out
+			conn.setConnectTimeout(3000);
+
+			int responseCode = conn.getResponseCode();
+
+			isInternetAvailaible = (responseCode == 200);
+
+		} catch (MalformedURLException e) {
+			logsProvider.info("net check err : " + e.getMessage());
+			isInternetAvailaible = false;
+		} catch (IOException e) {
+			logsProvider.info("net check err : " + e.getMessage());
+			isInternetAvailaible = false;
+		}
+
+		logsProvider.info("Internet connection check: " + isInternetAvailaible);
+
+		return isInternetAvailaible;
 	}
 
 }

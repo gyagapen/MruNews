@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +28,8 @@ public class ArticleListActivity extends Activity implements Runnable {
 	private ArrayList<ArticleHeader> articleList = null;
 	private ListArticleAdapter listArticleAdapter;
 	private boolean isRefreshed = false;
+	private LogsProvider logsProvider = null;
+
 	// waiting dialog
 	private ProgressDialog progressDialog;
 
@@ -41,6 +45,8 @@ public class ArticleListActivity extends Activity implements Runnable {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.article_list);
+
+		logsProvider = new LogsProvider(null, this.getClass());
 
 		// getting info from intent
 		Intent myIntent = getIntent();
@@ -91,27 +97,32 @@ public class ArticleListActivity extends Activity implements Runnable {
 
 	@Override
 	public void run() {
-		RSSReader rssReader = new RSSReader();
-		articleList = new ArrayList<ArticleHeader>();
-		boolean useCache = true;
 
-		try {
-			
-			//force network response
-			if(isRefreshed)
-			{
-				useCache = false;
+		// if there is an internet connection
+		if (HTMLPageParser.isInternetConnectionAvailable(logsProvider)) {
+			RSSReader rssReader = new RSSReader();
+			articleList = new ArrayList<ArticleHeader>();
+			boolean useCache = true;
+
+			try {
+
+				// force network response
+				if (isRefreshed) {
+					useCache = false;
+				}
+
+				articleList = rssReader.readFeed(rssFeed, rssId, useCache);
+				isRefreshed = false;
+
+				mHandler.sendEmptyMessage(0);
+
+			} catch (Exception e) {
+				mHandler.sendEmptyMessage(1);
 			}
-			
-			articleList = rssReader.readFeed(rssFeed, rssId, useCache);
-			isRefreshed = false;
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} else {
+			mHandler.sendEmptyMessage(2);
 		}
 
-		mHandler.sendEmptyMessage(0);
 		progressDialog.dismiss();
 
 		// animation
@@ -119,7 +130,6 @@ public class ArticleListActivity extends Activity implements Runnable {
 				R.animator.push_right_in);
 		HeaderListView.getRefreshableView().setAnimation(anim);
 		anim.start();
-
 
 	}
 
@@ -142,6 +152,14 @@ public class ArticleListActivity extends Activity implements Runnable {
 		// display waiting dialog
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage("Please wait...");
+		progressDialog.setCancelable(false);
+		progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ArticleListActivity.this.finish();
+					}
+				});
 
 		progressDialog.show();
 
@@ -152,6 +170,10 @@ public class ArticleListActivity extends Activity implements Runnable {
 
 					populateArticleList(articleList);
 					HeaderListView.onRefreshComplete();
+				} else if (msg.what == 1) {
+					displayErrorMessage("An error has occured");
+				} else if (msg.what == 2) {
+					displayErrorMessage("No internet connection detected");
 				}
 			}
 		};
@@ -160,6 +182,22 @@ public class ArticleListActivity extends Activity implements Runnable {
 		Thread tRetrieveList = new Thread(this);
 
 		tRetrieveList.start();
+
+	}
+
+	public void displayErrorMessage(String text) {
+		AlertDialog ad = new AlertDialog.Builder(this).create();
+		ad.setCancelable(false); // This blocks the 'BACK' button
+		ad.setMessage(text);
+		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Ok",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						ArticleListActivity.this.finish();
+					}
+				});
+
+		ad.show();
 	}
 
 }
