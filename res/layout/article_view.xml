@@ -32,6 +32,17 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:textAppearance="?android:attr/textAppearanceSmall" />
+         
+         <TextView
+             android:id="@+id/tvLinkToWeb"
+             android:layout_width="wrap_content"
+             android:layout_height="20dp"
+             android:layout_gravity="right"
+             android:gravity="right"
+             android:linksClickable="true"
+             android:text="@string/linkArticle"
+             android:textColor="@color/white"
+             android:textStyle="italic" />
 
          <Button
              android:id="@+id/butComment"
@@ -39,6 +50,8 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="@string/butComText" />
+
+         
 
     </LinearLayout>
 

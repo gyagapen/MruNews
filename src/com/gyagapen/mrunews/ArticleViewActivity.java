@@ -15,10 +15,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	private TextView artTitleView;
 	private TextView artContentView;
 	private Button buttonComments;
+	private TextView tvLinkToWeb;
 
 	private String articleLink = null;
 	private String articleId = null;
@@ -94,6 +96,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		// display waiting dialog
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage("Please wait...");
+		progressDialog.setCancelable(false);
 		progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -147,6 +150,17 @@ public class ArticleViewActivity extends Activity implements Runnable {
 					showPopup(ArticleViewActivity.this, p);
 			}
 		});
+		
+		tvLinkToWeb = (TextView) findViewById(R.id.tvLinkToWeb);
+		tvLinkToWeb.setOnClickListener(new OnClickListener() {
+			
+			//open link in browser
+			public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(articleLink));
+				startActivity(browserIntent);
+			}
+		});
+
 	}
 
 	public static void loadImage(String url, ImageView image) {

@@ -98,8 +98,7 @@ public class ArticleListActivity extends Activity implements Runnable {
 	@Override
 	public void run() {
 
-		// if there is an internet connection
-		if (HTMLPageParser.isInternetConnectionAvailable(logsProvider)) {
+		
 			RSSReader rssReader = new RSSReader();
 			articleList = new ArrayList<ArticleHeader>();
 			boolean useCache = true;
@@ -119,9 +118,7 @@ public class ArticleListActivity extends Activity implements Runnable {
 			} catch (Exception e) {
 				mHandler.sendEmptyMessage(1);
 			}
-		} else {
-			mHandler.sendEmptyMessage(2);
-		}
+		
 
 		progressDialog.dismiss();
 
@@ -172,9 +169,8 @@ public class ArticleListActivity extends Activity implements Runnable {
 					HeaderListView.onRefreshComplete();
 				} else if (msg.what == 1) {
 					displayErrorMessage("An error has occured");
-				} else if (msg.what == 2) {
-					displayErrorMessage("No internet connection detected");
 				}
+
 			}
 		};
 
