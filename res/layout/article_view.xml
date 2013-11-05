@@ -45,6 +45,13 @@
              android:textStyle="italic" />
 
          <Button
+             android:id="@+id/butShare"
+             style="?android:attr/buttonStyleSmall"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/butShareText" />
+         
+         <Button
              android:id="@+id/butComment"
              style="?android:attr/buttonStyleSmall"
              android:layout_width="wrap_content"

@@ -6,6 +6,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.brickred.socialauth.android.DialogListener;
+import org.brickred.socialauth.android.SocialAuthAdapter;
+import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
+import org.brickred.socialauth.android.SocialAuthError;
+import org.brickred.socialauth.android.SocialAuthListener;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,8 +25,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.util.Linkify;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +41,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
@@ -45,6 +52,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	private TextView artContentView;
 	private Button buttonComments;
 	private TextView tvLinkToWeb;
+	private Button share = null;
 
 	private String articleLink = null;
 	private String articleId = null;
@@ -63,6 +71,9 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 	private AQuery aq;
 
+	// SocialAuth Component
+	SocialAuthAdapter adapter;
+
 	// The "x" and "y" position of the "Show Button" on screen.
 	Point p;
 
@@ -75,6 +86,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.article_view);
 
 		// screen size
@@ -150,16 +162,57 @@ public class ArticleViewActivity extends Activity implements Runnable {
 					showPopup(ArticleViewActivity.this, p);
 			}
 		});
-		
+
 		tvLinkToWeb = (TextView) findViewById(R.id.tvLinkToWeb);
 		tvLinkToWeb.setOnClickListener(new OnClickListener() {
-			
-			//open link in browser
+
+			// open link in browser
 			public void onClick(View v) {
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(articleLink));
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse(articleLink));
 				startActivity(browserIntent);
 			}
 		});
+
+		share = (Button) findViewById(R.id.butShare);
+		/*
+		 * buttonShare.setOnClickListener(new OnClickListener() {
+		 * 
+		 * //send action to social networks public void onClick(View v) {
+		 * 
+		 * Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+		 * sharingIntent.setType("plain/text");
+		 * sharingIntent.putExtra(Intent.EXTRA_SUBJECT, ArtTitle);
+		 * //sharingIntent.putExtra(Intent.ex_, ArtTitle);
+		 * sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+		 * "via Moris News"); //image Uri screenshotUri = Uri.parse(Imagelink);
+		 * sharingIntent.setType("image/png");
+		 * sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+		 * 
+		 * startActivity(Intent.createChooser(sharingIntent,"Share using")); }
+		 * });
+		 */
+
+		// TEST
+
+		share.setText("Share");
+		// share.setTextColor(R.color.white);
+		share.setBackgroundResource(R.drawable.button_gradient);
+
+		// Add it to Library
+		adapter = new SocialAuthAdapter(new ResponseListener());
+
+		// Add providers
+		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+		adapter.addProvider(Provider.EMAIL, R.drawable.email);
+		// adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+		// adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+		
+		// Providers require setting user call Back url
+        adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+		
+		adapter.enable(share);
 
 	}
 
@@ -306,6 +359,120 @@ public class ArticleViewActivity extends Activity implements Runnable {
 				});
 
 		ad.show();
+	}
+
+	/**
+	 * Listens Response from Library
+	 * 
+	 */
+
+	private final class ResponseListener implements DialogListener {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public void onComplete(Bundle values) {
+
+			// Variable to receive message status
+			boolean status = false;
+
+			Log.d("ShareButton", "Authentication Successful");
+
+			// Get name of provider after authentication
+			String providerName = values.getString(SocialAuthAdapter.PROVIDER);
+			Log.d("ShareButton", "Provider Name = " + providerName);
+
+			// Share via Email Intent
+			if (providerName.equalsIgnoreCase("share_mail")) {
+
+				Intent email = new Intent(Intent.ACTION_SEND);
+				// email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
+				email.putExtra(Intent.EXTRA_SUBJECT, ArtTitle + " via "
+						+ R.string.app_name);
+				String content = "Please check this news: " + articleLink;
+				email.putExtra(Intent.EXTRA_TEXT, content);
+				// need this to prompts email client only
+				email.setType("message/rfc822");
+				startActivity(Intent.createChooser(email,
+						"Choose an Email client"));
+				
+				status = true;
+				// post via twitter
+			} else if (providerName.equals("twitter"))
+			{
+				adapter.updateStatus("test", new MessageListener(), true);
+				status = true;
+			} //post via facebook
+			else
+			{
+				try {
+
+					adapter.updateStory(ArtTitle, "", "", "", articleLink,
+							Imagelink, new MessageListener());
+
+					status = true;
+				} catch (Exception e) {
+					status = false;
+				}
+
+			
+			}
+			
+			
+			// Post Toast or Dialog to display on screen
+			if (status)
+				Toast.makeText(ArticleViewActivity.this,
+						"Message posted on " + providerName,
+						Toast.LENGTH_SHORT).show();
+			else
+				Toast.makeText(ArticleViewActivity.this,
+						"Message not posted on" + providerName,
+						Toast.LENGTH_SHORT).show();
+
+
+		}
+
+		public void onError(SocialAuthError error) {
+			Log.d("ShareButton", "Authentication Error "+error.getMessage());
+		}
+
+		public void onCancel() {
+			Log.d("ShareButton", "Authentication Cancelled");
+		}
+
+		@Override
+		public void onBack() {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+	// To get status of message after authentication
+	private final class MessageListener implements SocialAuthListener<Integer> {
+
+		public void onExecute(Integer t) {
+			Integer status = t;
+			if (status.intValue() == 200 || status.intValue() == 201
+					|| status.intValue() == 204)
+				Toast.makeText(ArticleViewActivity.this, "Message posted",
+						Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(ArticleViewActivity.this, "Message not posted",
+						Toast.LENGTH_LONG).show();
+		}
+
+		public void onError(SocialAuthError e) {
+			
+		}
+
+		@Override
+		public void onExecute(String arg0, Integer arg1) {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
 
 }
