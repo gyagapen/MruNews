@@ -210,7 +210,7 @@ public class HTMLPageParser {
 
 		// get Title
 
-		Element TitleElement = doc.select("h2.itemTitle").first();
+		Element TitleElement = doc.select("h1.itemTitle").first();
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 

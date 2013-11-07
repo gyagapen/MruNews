@@ -14,12 +14,14 @@ import org.brickred.socialauth.android.SocialAuthListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,7 +53,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	private TextView artTitleView;
 	private TextView artContentView;
 	private Button buttonComments;
-	private TextView tvLinkToWeb;
+	private Button buttonLinkToWeb;
 	private Button share = null;
 
 	private String articleLink = null;
@@ -118,7 +120,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 				});
 
 		progressDialog.show();
-
+		
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
 
@@ -153,6 +155,8 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		frameLayout = (FrameLayout) findViewById(R.id.articleViewFrame);
 		frameLayout.getForeground().setAlpha(0);
 
+		buttonComments.setBackgroundResource(R.drawable.blue_gradient);
+		buttonComments.setTextColor(Color.WHITE);
 		buttonComments.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -163,8 +167,11 @@ public class ArticleViewActivity extends Activity implements Runnable {
 			}
 		});
 
-		tvLinkToWeb = (TextView) findViewById(R.id.tvLinkToWeb);
-		tvLinkToWeb.setOnClickListener(new OnClickListener() {
+		buttonLinkToWeb = (Button) findViewById(R.id.butLinkToWeb);
+		buttonLinkToWeb.setTextColor(Color.WHITE);
+		buttonLinkToWeb.setBackgroundResource(R.drawable.blue_gradient);
+		buttonLinkToWeb.setOnClickListener(new OnClickListener() {
+			
 
 			// open link in browser
 			public void onClick(View v) {
@@ -175,29 +182,10 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		});
 
 		share = (Button) findViewById(R.id.butShare);
-		/*
-		 * buttonShare.setOnClickListener(new OnClickListener() {
-		 * 
-		 * //send action to social networks public void onClick(View v) {
-		 * 
-		 * Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-		 * sharingIntent.setType("plain/text");
-		 * sharingIntent.putExtra(Intent.EXTRA_SUBJECT, ArtTitle);
-		 * //sharingIntent.putExtra(Intent.ex_, ArtTitle);
-		 * sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-		 * "via Moris News"); //image Uri screenshotUri = Uri.parse(Imagelink);
-		 * sharingIntent.setType("image/png");
-		 * sharingIntent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
-		 * 
-		 * startActivity(Intent.createChooser(sharingIntent,"Share using")); }
-		 * });
-		 */
-
-		// TEST
 
 		share.setText("Share");
-		// share.setTextColor(R.color.white);
-		share.setBackgroundResource(R.drawable.button_gradient);
+		share.setTextColor(Color.WHITE);
+		share.setBackgroundResource(R.drawable.blue_gradient);
 
 		// Add it to Library
 		adapter = new SocialAuthAdapter(new ResponseListener());
@@ -206,8 +194,6 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
 		adapter.addProvider(Provider.EMAIL, R.drawable.email);
-		// adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
-		// adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
 		
 		// Providers require setting user call Back url
         adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
@@ -360,6 +346,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 		ad.show();
 	}
+
 
 	/**
 	 * Listens Response from Library
