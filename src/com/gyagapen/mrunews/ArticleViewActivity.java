@@ -46,6 +46,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
+import com.gyagapen.mrunews.R;
+import com.gyagapen.mrunews.R.animator;
+import com.gyagapen.mrunews.R.drawable;
+import com.gyagapen.mrunews.R.id;
+import com.gyagapen.mrunews.R.layout;
+import com.gyagapen.mrunews.R.string;
+import com.gyagapen.mrunews.adapters.ListCommentAdapter;
+import com.gyagapen.mrunews.entities.ArticleComment;
+import com.gyagapen.mrunews.entities.ArticleContent;
+import com.gyagapen.mrunews.parser.HTMLPageParser;
 
 public class ArticleViewActivity extends Activity implements Runnable {
 

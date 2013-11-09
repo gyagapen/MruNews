@@ -1,5 +1,9 @@
 package com.gyagapen.mrunews;
 
+import com.gyagapen.mrunews.R;
+import com.gyagapen.mrunews.R.id;
+import com.gyagapen.mrunews.R.layout;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

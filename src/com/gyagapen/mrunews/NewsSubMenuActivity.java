@@ -2,6 +2,13 @@ package com.gyagapen.mrunews;
 
 import java.util.ArrayList;
 
+import com.gyagapen.mrunews.R;
+import com.gyagapen.mrunews.R.animator;
+import com.gyagapen.mrunews.R.id;
+import com.gyagapen.mrunews.R.layout;
+import com.gyagapen.mrunews.adapters.SubMenuAdapter;
+import com.gyagapen.mrunews.entities.NewsSubEntry;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
