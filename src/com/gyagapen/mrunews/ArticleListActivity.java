@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,10 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 
-import com.gyagapen.mrunews.R;
-import com.gyagapen.mrunews.R.animator;
-import com.gyagapen.mrunews.R.id;
-import com.gyagapen.mrunews.R.layout;
 import com.gyagapen.mrunews.adapters.ListArticleAdapter;
 import com.gyagapen.mrunews.common.LogsProvider;
 import com.gyagapen.mrunews.entities.ArticleHeader;
@@ -157,7 +154,7 @@ public class ArticleListActivity extends Activity implements Runnable {
 		// display waiting dialog
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage("Please wait...");
-		progressDialog.setCancelable(false);
+		progressDialog.setCanceledOnTouchOutside(false);
 		progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -165,6 +162,15 @@ public class ArticleListActivity extends Activity implements Runnable {
 						ArticleListActivity.this.finish();
 					}
 				});
+		
+		progressDialog.setOnCancelListener(new OnCancelListener() {
+			
+			//when progress dialog is cancelled
+			public void onCancel(DialogInterface dialog) {
+				//close activity
+				ArticleListActivity.this.finish();
+			}
+		});
 
 		progressDialog.show();
 
@@ -191,8 +197,8 @@ public class ArticleListActivity extends Activity implements Runnable {
 
 	public void displayErrorMessage(String text) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();
-		ad.setCancelable(false); // This blocks the 'BACK' button
 		ad.setMessage(text);
+		ad.setCanceledOnTouchOutside(false);
 		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Ok",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -203,5 +209,7 @@ public class ArticleListActivity extends Activity implements Runnable {
 
 		ad.show();
 	}
+	
+	
 
 }

@@ -19,6 +19,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -120,7 +121,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		// display waiting dialog
 		progressDialog = new ProgressDialog(this);
 		progressDialog.setMessage("Please wait...");
-		progressDialog.setCancelable(false);
+		progressDialog.setCanceledOnTouchOutside(false);
 		progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -129,8 +130,17 @@ public class ArticleViewActivity extends Activity implements Runnable {
 					}
 				});
 
+		progressDialog.setOnCancelListener(new OnCancelListener() {
+
+			// when progress dialog is cancelled
+			public void onCancel(DialogInterface dialog) {
+				// close activity
+				ArticleViewActivity.this.finish();
+			}
+		});
+
 		progressDialog.show();
-		
+
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
 
@@ -144,8 +154,6 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 					// set number of comments
 					buttonComments.setText(buttonCommentText);
-				} else if (msg.what == 1) {
-					displayErrorMessage("Error while loading the page...");
 				}
 			}
 		};
@@ -181,7 +189,6 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		buttonLinkToWeb.setTextColor(Color.WHITE);
 		buttonLinkToWeb.setBackgroundResource(R.drawable.blue_gradient);
 		buttonLinkToWeb.setOnClickListener(new OnClickListener() {
-			
 
 			// open link in browser
 			public void onClick(View v) {
@@ -204,10 +211,11 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
 		adapter.addProvider(Provider.EMAIL, R.drawable.email);
-		
+
 		// Providers require setting user call Back url
-        adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
-		
+		adapter.addCallBack(Provider.TWITTER,
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+
 		adapter.enable(share);
 
 	}
@@ -242,20 +250,30 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 			mHandler.sendEmptyMessage(0);
 
-		} catch (IOException e) {
-			mHandler.sendEmptyMessage(1);
+			progressDialog.dismiss();
+
+			// animation
+			anim = AnimationUtils.loadAnimation(getApplicationContext(),
+					R.animator.push_right_in);
+			artTitleView.setAnimation(anim);
+			artImageView.setAnimation(anim);
+			artContentView.setAnimation(anim);
+			buttonComments.setAnimation(anim);
+			anim.start();
+
+		} catch (Exception e) {
+
+			progressDialog.dismiss();
+
+			// fallback : open webview activity
+			Intent webViewIntent = new Intent(this, WebViewActivity.class);
+			webViewIntent.putExtra("link", articleLink);
+			startActivity(webViewIntent);
+
+			// end the activity
+			finish();
 		}
 
-		progressDialog.dismiss();
-
-		// animation
-		anim = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.animator.push_right_in);
-		artTitleView.setAnimation(anim);
-		artImageView.setAnimation(anim);
-		artContentView.setAnimation(anim);
-		buttonComments.setAnimation(anim);
-		anim.start();
 	}
 
 	public void finish() {
@@ -342,22 +360,6 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 	}
 
-	public void displayErrorMessage(String text) {
-		AlertDialog ad = new AlertDialog.Builder(this).create();
-		ad.setCancelable(false); // This blocks the 'BACK' button
-		ad.setMessage(text);
-		ad.setButton(DialogInterface.BUTTON_NEGATIVE, "Ok",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						ArticleViewActivity.this.finish();
-					}
-				});
-
-		ad.show();
-	}
-
-
 	/**
 	 * Listens Response from Library
 	 * 
@@ -393,16 +395,14 @@ public class ArticleViewActivity extends Activity implements Runnable {
 				email.setType("message/rfc822");
 				startActivity(Intent.createChooser(email,
 						"Choose an Email client"));
-				
+
 				status = true;
 				// post via twitter
-			} else if (providerName.equals("twitter"))
-			{
+			} else if (providerName.equals("twitter")) {
 				adapter.updateStatus("test", new MessageListener(), true);
 				status = true;
-			} //post via facebook
-			else
-			{
+			} // post via facebook
+			else {
 				try {
 
 					adapter.updateStory(ArtTitle, "", "", "", articleLink,
@@ -413,25 +413,22 @@ public class ArticleViewActivity extends Activity implements Runnable {
 					status = false;
 				}
 
-			
 			}
-			
-			
+
 			// Post Toast or Dialog to display on screen
 			if (status)
 				Toast.makeText(ArticleViewActivity.this,
-						"Message posted on " + providerName,
-						Toast.LENGTH_SHORT).show();
+						"Message posted on " + providerName, Toast.LENGTH_SHORT)
+						.show();
 			else
 				Toast.makeText(ArticleViewActivity.this,
 						"Message not posted on" + providerName,
 						Toast.LENGTH_SHORT).show();
 
-
 		}
 
 		public void onError(SocialAuthError error) {
-			Log.d("ShareButton", "Authentication Error "+error.getMessage());
+			Log.d("ShareButton", "Authentication Error " + error.getMessage());
 		}
 
 		public void onCancel() {
@@ -461,7 +458,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		}
 
 		public void onError(SocialAuthError e) {
-			
+
 		}
 
 		@Override
@@ -470,6 +467,17 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 		}
 
+	}
+
+	@Override
+	protected void onPause() {
+
+		// close progress dialog if it's opened
+		if (progressDialog.isShowing()) {
+			progressDialog.dismiss();
+		}
+
+		super.onPause();
 	}
 
 }

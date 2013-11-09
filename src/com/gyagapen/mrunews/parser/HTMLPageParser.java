@@ -52,7 +52,7 @@ public class HTMLPageParser {
 		this.parseType = parseType;
 	}
 
-	public ArticleContent parsePage() throws IOException {
+	public ArticleContent parsePage() throws Exception {
 		ArticleContent artContent = new ArticleContent();
 
 		if (parseType.equals(StaticValues.LEXPRESS_CODE)) {
@@ -69,7 +69,7 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
-	private ArticleContent parseLeMauricienPage() throws IOException {
+	private ArticleContent parseLeMauricienPage() throws Exception {
 
 		ArticleContent artContent = new ArticleContent();
 
@@ -110,7 +110,7 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
-	private ArticleContent parseExpressPage() throws IOException {
+	private ArticleContent parseExpressPage() throws Exception {
 
 		ArticleContent artContent = new ArticleContent();
 
@@ -122,7 +122,7 @@ public class HTMLPageParser {
 				StaticValues.LEXPRESS_CODE, doc));
 
 		// get Content
-		Elements ContentElements = doc.select(".field-name-body p");
+		Elements ContentElements = doc.select(".field-name-body");
 		String content = "";
 		for (int i = 0; i < ContentElements.size(); i++) {
 
@@ -178,7 +178,7 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
-	private ArticleContent parseDefiPlusPage() throws IOException {
+	private ArticleContent parseDefiPlusPage() throws Exception {
 
 		ArticleContent artContent = new ArticleContent();
 
@@ -223,7 +223,7 @@ public class HTMLPageParser {
 		return artContent;
 	}
 
-	private ArticleContent parseLeMatinalPage() throws IOException {
+	private ArticleContent parseLeMatinalPage() throws Exception {
 
 		ArticleContent artContent = new ArticleContent();
 
@@ -267,7 +267,7 @@ public class HTMLPageParser {
 	}
 
 	public static String getImageFromLink(String url, String newsCode,
-			Document doc) throws IOException {
+			Document doc) throws Exception {
 		String imageLink = "";
 
 		try {

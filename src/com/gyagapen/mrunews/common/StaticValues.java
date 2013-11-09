@@ -1,17 +1,20 @@
 package com.gyagapen.mrunews.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import android.content.Context;
 
 import com.gyagapen.mrunews.R;
-import com.gyagapen.mrunews.R.drawable;
 import com.gyagapen.mrunews.entities.News;
 import com.gyagapen.mrunews.entities.NewsSubEntry;
 
 public class StaticValues {
+	
+	public static final String MAIL_RECIPIENT = "gyagapen@gmail.com";
+	public static final String MAIL_SUBJECT = "Moris News";
 
 	private static String LEXPRESS_NAME = "Lexpress";
-	private static int LEXPRESS_IMG = R.drawable.lexpress_news;
+	private static int LEXPRESS_IMG = R.drawable.lexpress;
 	private static ArrayList<String> LEXPRESS_RSS = new ArrayList<String>() {
 		{
 			add("http://www.lexpress.mu/rss.xml");
@@ -21,7 +24,7 @@ public class StaticValues {
 	
 	public static String LEMAURICIEN_CODE = "MAU";
 	private static String LEMAURICIEN_NAME = "Le Mauricien ";
-	private static int LEMAURICIEN_IMG = R.drawable.lemauricien_newspaper;
+	private static int LEMAURICIEN_IMG = R.drawable.lemauricien;
 	private static ArrayList<NewsSubEntry> LEMAURICIEN_SUBMENU = new ArrayList<NewsSubEntry>() {
 		{
 			add(new NewsSubEntry("> Général","http://www.lemauricien.com/rss/articles/all"));

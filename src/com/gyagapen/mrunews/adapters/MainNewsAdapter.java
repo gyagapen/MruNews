@@ -65,7 +65,7 @@ public class MainNewsAdapter extends ArrayAdapter<News> implements ListAdapter,
 		final News currentEntry = news.get(position);
 
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.article_entry, parent, false); // initialize
+			convertView = inflater.inflate(R.layout.main_news_entry, parent, false); // initialize
 																				// the
 																				// layout
 																				// from

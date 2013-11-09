@@ -39,7 +39,7 @@ public class GetImageAsync extends AsyncTask<String, Void, String> {
 			{
 				imageLink = HTMLPageParser.getImageFromLink(params[0], params[1], null);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
