@@ -9,6 +9,7 @@
     <string name="butShareText">Share</string>
     <string name="developerName">Developed by gyagapen</string>
     <string name="menuContactDev">Contact Developer</string>
+    <string name="adId">ca-app-pub-4662434208516595/3831694465</string>
 
     <color name="separator">#B2E0FF</color>
     <color name="white">#ffffff</color>

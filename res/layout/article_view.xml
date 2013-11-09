@@ -1,77 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-<FrameLayout
-    android:id="@+id/articleViewFrame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:foreground="@drawable/shape_window_dim" >
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" >
+        <FrameLayout
+            android:id="@+id/articleViewFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/shape_window_dim"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tvArtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:typeface="sans" />
-        
-         <ImageView
-        android:id="@+id/ImgViewArt"
+            <LinearLayout
+                android:id="@+id/articleview_linlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tvArtTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <ImageView
+                    android:id="@+id/ImgViewArt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvArtContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="80dp"
+                    android:gravity="center" >
+
+                    <Button
+                        android:id="@+id/butComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="1dp"
+                        android:text="@string/butComText" />
+
+                    <Button
+                        android:id="@+id/butShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/butShareText" />
+
+                    <Button
+                        android:id="@+id/butLinkToWeb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="1dp"
+                        android:text="@string/butLinkWeb" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
+
+    <com.google.ads.AdView
+        android:id="@+id/adView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/adId"
+        ads:loadAdOnCreate="true" />
 
-         <TextView
-             android:id="@+id/tvArtContent"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:textSize="15dp"
-             android:textAppearance="?android:attr/textAppearanceSmall" />
-
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center"
-             android:gravity="center" 
-             android:layout_marginBottom="20dp">
-
-             <Button
-                 android:id="@+id/butComment"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginRight="1dp"
-                 android:text="@string/butComText" />
-
-             <Button
-                 android:id="@+id/butShare"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:text="@string/butShareText" />
-
-             <Button
-                 android:id="@+id/butLinkToWeb"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="1dp"
-                 android:text="@string/butLinkWeb" />
-
-         </LinearLayout>
-
-    </LinearLayout>
-
-   
-
-</FrameLayout>
-
-</ScrollView>
+</RelativeLayout>

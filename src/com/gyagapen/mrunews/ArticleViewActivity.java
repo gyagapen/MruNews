@@ -13,13 +13,11 @@ import org.brickred.socialauth.android.SocialAuthError;
 import org.brickred.socialauth.android.SocialAuthListener;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -47,13 +45,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
-import com.gyagapen.mrunews.R;
-import com.gyagapen.mrunews.R.animator;
-import com.gyagapen.mrunews.R.drawable;
-import com.gyagapen.mrunews.R.id;
-import com.gyagapen.mrunews.R.layout;
-import com.gyagapen.mrunews.R.string;
+import com.google.ads.AdView;
 import com.gyagapen.mrunews.adapters.ListCommentAdapter;
+import com.gyagapen.mrunews.common.MenuHelper;
 import com.gyagapen.mrunews.entities.ArticleComment;
 import com.gyagapen.mrunews.entities.ArticleContent;
 import com.gyagapen.mrunews.parser.HTMLPageParser;
@@ -81,7 +75,9 @@ public class ArticleViewActivity extends Activity implements Runnable {
 	private int screenWidth;
 
 	private FrameLayout frameLayout;
-
+	private MenuHelper menuHelper;
+	private AdView adView;
+	
 	private AQuery aq;
 
 	// SocialAuth Component
@@ -101,6 +97,11 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.article_view);
+		
+		//generate ad banner
+		/*menuHelper = new MenuHelper(this);
+		LinearLayout linLayout = (LinearLayout)findViewById(R.id.articleview_linlayout);
+		menuHelper.generateAdsBanner(adView, linLayout, this);*/
 
 		// screen size
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -478,6 +479,17 @@ public class ArticleViewActivity extends Activity implements Runnable {
 		}
 
 		super.onPause();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		
+		if(adView != null)
+		{
+			adView.destroy();
+		}
+		
+		super.onDestroy();
 	}
 
 }

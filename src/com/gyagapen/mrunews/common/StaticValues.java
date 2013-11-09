@@ -12,6 +12,7 @@ public class StaticValues {
 	
 	public static final String MAIL_RECIPIENT = "gyagapen@gmail.com";
 	public static final String MAIL_SUBJECT = "Moris News";
+	public static final String MY_AD_UNIT_ID = "ca-app-pub-4662434208516595/3831694465";
 
 	private static String LEXPRESS_NAME = "Lexpress";
 	private static int LEXPRESS_IMG = R.drawable.lexpress;

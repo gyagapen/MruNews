@@ -1,11 +1,16 @@
 package com.gyagapen.mrunews.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 import com.gyagapen.mrunews.R;
 
 /**
@@ -79,6 +84,20 @@ public class MenuHelper {
 
 		return versionName;
 
+	}
+	
+	//generate ads banner
+	public void generateAdsBanner(AdView adView, LinearLayout layout, Activity activity)
+	{
+		// Create the adView
+	    adView = new AdView(activity, AdSize.BANNER, StaticValues.MY_AD_UNIT_ID);
+
+	    
+	    // Add the adView to it
+	    layout.addView(adView);
+
+	    // Initiate a generic request to load it with an ad
+	    adView.loadAd(new AdRequest());
 	}
 
 }

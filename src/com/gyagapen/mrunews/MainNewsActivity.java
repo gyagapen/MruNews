@@ -20,9 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.ads.AdView;
 import com.gyagapen.mrunews.adapters.MainNewsAdapter;
 import com.gyagapen.mrunews.common.LogsProvider;
 import com.gyagapen.mrunews.common.MenuHelper;
@@ -34,6 +36,7 @@ public class MainNewsActivity extends Activity implements Runnable {
 	private ListView mainArticleListView;
 	private LogsProvider logsProvider = null;
 	private MenuHelper menuHelper = null;
+	private AdView adView;
 	
 	// waiting dialog
 	private ProgressDialog progressDialog;
@@ -47,14 +50,17 @@ public class MainNewsActivity extends Activity implements Runnable {
 		//init menu helper
 		menuHelper = new MenuHelper(this);
 		
+		setContentView(R.layout.news_main);
+		
+		//populate ads
+		//LinearLayout linLayout = (LinearLayout)findViewById(R.id.main_linearlayout);
+		//menuHelper.generateAdsBanner(adView, linLayout, this);;
+		
 		logsProvider = new LogsProvider(null, this.getClass());
 
 		// create cache
 		createCache();
-		
 
-		setContentView(R.layout.news_main);
-		
 
 		mainArticleListView = (ListView) findViewById(R.id.ArticleListViewMain);
 
@@ -213,4 +219,19 @@ public class MainNewsActivity extends Activity implements Runnable {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	protected void onDestroy() {
+		if(adView != null)
+		{
+			adView.destroy();
+		}
+		
+		super.onDestroy();
+	}
+	
+	
+	
+	
+	
 }
+
