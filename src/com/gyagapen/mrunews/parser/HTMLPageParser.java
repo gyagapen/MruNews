@@ -193,14 +193,24 @@ public class HTMLPageParser {
 		Element IntroElement = doc.select("div.itemIntroText").first();
 		String intro = IntroElement.text();
 
-		Element ContentElements = doc.select("div.itemFullText").first();
-		String content = "";
-		content = intro + "#SPACE#" + ContentElements.html();
+		Elements ContentElements = doc.select("div.itemFullText");
+		String content = intro;
+		
+		/*for(int i=0;i<ContentElements.size();i++)
+		{
+			content = "#SPACE#" + ContentElements.get(i).html();
+		}*/
+		
+		content += "#SPACE#" + ContentElements.html();
 
 		// add breaklines
-		Pattern p = Pattern.compile("<br \\/>");
+		Pattern p = Pattern.compile("<br />");
 		Matcher matcher = p.matcher(content);
 		content = matcher.replaceAll("#SPACE#");
+		
+		Pattern parah = Pattern.compile("<p>");
+		Matcher matcherParah = parah.matcher(content);
+		content = matcherParah.replaceAll("#SPACE#");
 
 		content = Jsoup.parse(content).text();
 
@@ -208,6 +218,7 @@ public class HTMLPageParser {
 		Matcher spaceMatcher = paragraph.matcher(content);
 		content = spaceMatcher.replaceAll(System.getProperty("line.separator")
 				+ System.getProperty("line.separator"));
+		
 
 		artContent.setContent(content);
 
