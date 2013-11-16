@@ -66,6 +66,7 @@ public class StaticValues {
 	private static int DEFI_QUOTIDIEN_IMG = R.drawable.defiquotidien;
 	private static ArrayList<NewsSubEntry> DEFI_QUOTIDIEN_SUBMENU = new ArrayList<NewsSubEntry>() {
 		{
+			add(new NewsSubEntry("> Live News","http://www.defimedia.info/live-news.feed"));
 			add(new NewsSubEntry("> Général","http://www.defimedia.info/defi-quotidien.feed"));
 			add(new NewsSubEntry("> Actualités","http://www.defimedia.info/defi-quotidien/dq-actualites.feed"));
 			add(new NewsSubEntry("> Economie","http://www.defimedia.info/defi-quotidien/dq-economie.feed"));
@@ -77,6 +78,46 @@ public class StaticValues {
 			add(new NewsSubEntry("> Tribunal","http://www.defimedia.info/defi-quotidien/dq-tribunaux.feed"));
 			add(new NewsSubEntry("> Tribune","http://www.defimedia.info/defi-quotidien/dq-tribune.feed"));
 			add(new NewsSubEntry("> Xplik ou k","http://www.defimedia.info/defi-quotidien/dq-xplik-cas.feed"));
+
+		}
+	};
+	
+	
+	private static String DIMANCHE_HEBDO_NAME = "Le Dimanche Hebdo";
+	private static int DIMANCHE_HEBDO_IMG = R.drawable.dimanch_hebdo;
+	private static ArrayList<NewsSubEntry> DIMANCHE_HEBDO_SUBMENU = new ArrayList<NewsSubEntry>() {
+		{
+			add(new NewsSubEntry("> Général","http://www.defimedia.info/dimanche-hebdo.feed"));
+			add(new NewsSubEntry("> Actualités","http://www.defimedia.info/dimanche-hebdo/dh-actualites.feed"));
+			add(new NewsSubEntry("> Cover Story","http://www.defimedia.info/dimanche-hebdo/cover-story.feed"));
+			add(new NewsSubEntry("> Cool Zone", "http://www.defimedia.info/dimanche-hebdo/dh-cool-zone.feed"));
+			add(new NewsSubEntry("> Faits Divers","http://www.defimedia.info/dimanche-hebdo/dh-faits-divers.feed"));
+			add(new NewsSubEntry("> Interview","http://www.defimedia.info/dimanche-hebdo/dh-interview.feed"));
+			add(new NewsSubEntry("> Magazine","http://www.defimedia.info/dimanche-hebdo/dh-magazine.feed"));
+			add(new NewsSubEntry("> People","http://www.defimedia.info/dimanche-hebdo/dh-people.feed"));
+			add(new NewsSubEntry("> Opinion","http://www.defimedia.info/dimanche-hebdo/dh-point-vue.feed"));
+			add(new NewsSubEntry("> Reportage","http://www.defimedia.info/dimanche-hebdo/dh-reportage.feed"));
+			add(new NewsSubEntry("> Tribunaux","http://www.defimedia.info/dimanche-hebdo/dh-tribunaux.feed"));
+
+		}
+	};
+	
+	
+	private static String NEWS_SUNDAY_NAME = "News On Sunday";
+	private static int NEWS_SUNDAY_IMG = R.drawable.news_on_sunday;
+	private static ArrayList<NewsSubEntry> NEWS_SUNDAY_SUBMENU = new ArrayList<NewsSubEntry>() {
+		{
+			add(new NewsSubEntry("> General","http://www.defimedia.info/news-sunday.feed"));
+			add(new NewsSubEntry("> News","http://www.defimedia.info/news-sunday/nos-news.feed"));
+			add(new NewsSubEntry("> Court News","http://www.defimedia.info/news-sunday/court-news.feed"));
+			add(new NewsSubEntry("> Education","http://www.defimedia.info/news-sunday/nos-education.feed"));
+			add(new NewsSubEntry("> Health", "http://www.defimedia.info/news-sunday/health.feed"));
+			add(new NewsSubEntry("> Interview","http://www.defimedia.info/news-sunday/interview.feed"));
+			add(new NewsSubEntry("> Magazine","http://www.defimedia.info/news-sunday/magazine.feed"));
+			add(new NewsSubEntry("> Parliament","http://www.defimedia.info/news-sunday/nos-parliament.feed"));
+			add(new NewsSubEntry("> People","http://www.defimedia.info/news-sunday/nos-people.feed"));
+			add(new NewsSubEntry("> Police News","http://www.defimedia.info/news-sunday/police-news.feed"));
+			add(new NewsSubEntry("> Society","http://www.defimedia.info/news-sunday/society.feed"));
 
 		}
 	};
@@ -116,7 +157,13 @@ public class StaticValues {
 				 DEFI_PLUS_IMG, DEFI_PLUS_SUBMENU);
 		newsList.add(defiPlusNews);
 		
-
+		News dimancheHebdoNews = new News(DIMANCHE_HEBDO_NAME, DEFI_PLUS_CODE,
+				 DIMANCHE_HEBDO_IMG, DIMANCHE_HEBDO_SUBMENU);
+		newsList.add(dimancheHebdoNews);
+		
+		News newsOnSundayNews = new News(NEWS_SUNDAY_NAME, DEFI_PLUS_CODE,
+				 NEWS_SUNDAY_IMG, NEWS_SUNDAY_SUBMENU);
+		newsList.add(newsOnSundayNews);
 
 
 		return newsList;

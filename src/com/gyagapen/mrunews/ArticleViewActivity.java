@@ -388,8 +388,7 @@ public class ArticleViewActivity extends Activity implements Runnable {
 
 				Intent email = new Intent(Intent.ACTION_SEND);
 				// email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
-				email.putExtra(Intent.EXTRA_SUBJECT, ArtTitle + " via "
-						+ R.string.app_name);
+				email.putExtra(Intent.EXTRA_SUBJECT, ArtTitle + " via Moris News");
 				String content = "Please check this news: " + articleLink;
 				email.putExtra(Intent.EXTRA_TEXT, content);
 				// need this to prompts email client only

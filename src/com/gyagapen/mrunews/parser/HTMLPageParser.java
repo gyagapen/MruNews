@@ -121,15 +121,17 @@ public class HTMLPageParser {
 		artContent.setImageLink(getImageFromLink(linkToParse,
 				StaticValues.LEXPRESS_CODE, doc));
 
-		// get Content
-		Elements ContentElements = doc.select(".field-name-body");
+		//intro content
+		Elements ContentElements = doc.select(".field-name-body div.field-item p");
 		String content = "";
 		for (int i = 0; i < ContentElements.size(); i++) {
 
 			content += System.getProperty("line.separator")
 					+ ContentElements.get(i).text();
 		}
-
+		
+		
+		//body content
 		ContentElements = doc.select(".field-name-body div.field-item div");
 		for (int i = 0; i < ContentElements.size(); i++) {
 

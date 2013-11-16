@@ -27,6 +27,7 @@ public class MenuHelper {
 	public MenuHelper(Context context) {
 		this.context = context;
 		logsProvider = new LogsProvider(context, this.getClass());
+		
 	}
 
 	public Menu populatedMenu(Menu menu) {
