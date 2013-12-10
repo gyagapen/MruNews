@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,12 +13,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.os.StrictMode;
+import android.text.style.EasyEditSpan;
+
 import com.gyagapen.mrunews.common.LogsProvider;
 import com.gyagapen.mrunews.common.StaticValues;
 import com.gyagapen.mrunews.entities.ArticleComment;
 import com.gyagapen.mrunews.entities.ArticleContent;
-
-import android.os.StrictMode;
+import com.gyagapen.mrunews.entities.SemdexEntity;
 
 public class HTMLPageParser {
 
@@ -377,6 +380,44 @@ public class HTMLPageParser {
 		logsProvider.info("Internet connection check: " + isInternetAvailaible);
 
 		return isInternetAvailaible;
+	}
+	
+	
+	public ArrayList<SemdexEntity> getSemdexList() throws IOException
+	{
+		
+		ArrayList<SemdexEntity> semdexList = new ArrayList<SemdexEntity>();
+		
+		// get page content
+		Document doc = Jsoup.connect(linkToParse).timeout(10 * 2500).get();
+		
+		//get equity board table rows 
+		Elements equityBoardRows  = doc.select("div.officialquote tr");
+		
+		//for each row
+		for(int i=1; i<equityBoardRows.size();i++)
+		{
+			SemdexEntity semdexEntity = new SemdexEntity();
+			
+			//name
+			String semdexName = equityBoardRows.get(i).select("td").get(0).text();
+			semdexEntity.setName(semdexName);
+			
+			//nomimal
+			String semdexNominal = equityBoardRows.get(i).select("td").get(2).text();
+			semdexEntity.setNominal(semdexNominal);
+			
+			//last closing price
+			String semdexLCPrice = equityBoardRows.get(i).select("td").get(3).text();
+			semdexEntity.setLastClosingPrice(semdexLCPrice);
+			
+			//latest price
+			String semdexLatestPrice = equityBoardRows.get(i).select("td").get(4).text();
+			semdexEntity.setLatestPrice(semdexLatestPrice);
+			
+			semdexList.add(semdexEntity);
+		}
+		return semdexList;
 	}
 
 }

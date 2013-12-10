@@ -106,7 +106,7 @@ int id ArticleListViewMain 0x7f060020
 int id CommentListView 0x7f06001e
 int id ImgViewArt 0x7f060014
 int id WebViewArticle 0x7f06001a
-int id action_settings 0x7f06002c
+int id action_settings 0x7f060033
 int id adView 0x7f060019
 int id articleViewFrame 0x7f060011
 int id articleview_linlayout 0x7f060012
@@ -121,6 +121,7 @@ int id flip 0x7f060008
 int id gridview 0x7f060009
 int id headerImageView 0x7f06000d
 int id listViewArticle 0x7f060010
+int id lvSemdex 0x7f06002a
 int id lv_submenu 0x7f060022
 int id mainLVLayout 0x7f06001f
 int id manualOnly 0x7f060004
@@ -135,8 +136,10 @@ int id pull_to_refresh_sub_text 0x7f060029
 int id pull_to_refresh_text 0x7f060028
 int id rotate 0x7f060007
 int id scrollview 0x7f06000b
+int id tab1 0x7f060032
 int id tableArticles 0x7f06000c
-int id tableSubMenu 0x7f06002a
+int id tableRow1 0x7f06002b
+int id tableSubMenu 0x7f060030
 int id textView7 0x7f060021
 int id tvArtContent 0x7f060015
 int id tvArtTitle 0x7f060013
@@ -145,7 +148,11 @@ int id tvArticleTitle 0x7f06000e
 int id tvCommentAuthDate 0x7f06001c
 int id tvCommentContent 0x7f06001d
 int id tvCommentTitle 0x7f06001b
-int id tvSubMenuEntry 0x7f06002b
+int id tvSemdexLastClosingPrice 0x7f06002e
+int id tvSemdexLatest 0x7f06002f
+int id tvSemdexName 0x7f06002c
+int id tvSemdexNominal 0x7f06002d
+int id tvSubMenuEntry 0x7f060031
 int id webview 0x7f06000a
 int layout article_entry 0x7f030000
 int layout article_list 0x7f030001
@@ -159,7 +166,10 @@ int layout news_submenu 0x7f030008
 int layout overlay_pane 0x7f030009
 int layout pull_to_refresh_header_horizontal 0x7f03000a
 int layout pull_to_refresh_header_vertical 0x7f03000b
-int layout sub_menu_entry 0x7f03000c
+int layout semdex_list 0x7f03000c
+int layout semdex_list_entry 0x7f03000d
+int layout sub_menu_entry 0x7f03000e
+int layout tabbed_layout 0x7f03000f
 int menu main 0x7f0b0000
 int string action_settings 0x7f080007
 int string adId 0x7f08000d

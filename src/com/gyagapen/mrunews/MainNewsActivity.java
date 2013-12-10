@@ -35,8 +35,6 @@ public class MainNewsActivity extends Activity implements Runnable {
 
 	private ListView mainArticleListView;
 	private LogsProvider logsProvider = null;
-	private MenuHelper menuHelper = null;
-	private AdView adView;
 	
 	// waiting dialog
 	private ProgressDialog progressDialog;
@@ -47,19 +45,13 @@ public class MainNewsActivity extends Activity implements Runnable {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//init menu helper
-		menuHelper = new MenuHelper(this);
 		
 		setContentView(R.layout.news_main);
 		
-		//populate ads
-		//LinearLayout linLayout = (LinearLayout)findViewById(R.id.main_linearlayout);
-		//menuHelper.generateAdsBanner(adView, linLayout, this);;
 		
 		logsProvider = new LogsProvider(null, this.getClass());
 
-		// create cache
-		createCache();
+
 
 
 		mainArticleListView = (ListView) findViewById(R.id.ArticleListViewMain);
@@ -105,46 +97,7 @@ public class MainNewsActivity extends Activity implements Runnable {
 
 	}
 
-	/**
-	 * Create cache for http requests
-	 */
-	public void createCache() {
 
-		try {
-			File httpCacheDir = null;
-			// try to install cache on external memory
-			if (getExternalCacheDir() != null) {
-				httpCacheDir = new File(getExternalCacheDir(), "http");
-			} else // use internal cache
-			{
-				httpCacheDir = new File(getCacheDir(), "http");
-			}
-			long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
-
-			HttpResponseCache.install(httpCacheDir, httpCacheSize);
-		} catch (IOException e) {
-			Log.i("MruNews", "HTTP response cache installation failed:" + e);
-		}
-	}
-
-	@Override
-	protected void onStop() {
-
-		HttpResponseCache cache = HttpResponseCache.getInstalled();
-		if (cache != null) {
-			try {
-				if(cache != null)
-				{
-					cache.flush();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			;
-		}
-
-		super.onStop();
-	}
 
 	@Override
 	public void run() {
@@ -191,45 +144,12 @@ public class MainNewsActivity extends Activity implements Runnable {
 		ad.show();
 	}
 
-	/**
-	 * Color action bar text in white
-	 */
-	private void colorActionBarTextWhite() {
-		int actionBarTitleId = Resources.getSystem().getIdentifier(
-				"action_bar_title", "id", "android");
-		if (actionBarTitleId > 0) {
-			TextView title = (TextView) findViewById(actionBarTitleId);
-			if (title != null) {
-				title.setTextColor(Color.WHITE);
-			}
-		}
-	}
-	
-	//menu
-	public boolean onCreateOptionsMenu(Menu menu) {
-		
-		menuHelper.populatedMenu(menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	//on menu on clicked
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
 
-		menuHelper.executeMenuAction(item);
-		
-		return super.onOptionsItemSelected(item);
-	}
+
 	
-	@Override
-	protected void onDestroy() {
-		if(adView != null)
-		{
-			adView.destroy();
-		}
-		
-		super.onDestroy();
-	}
+
+	
+	
 	
 	
 	
