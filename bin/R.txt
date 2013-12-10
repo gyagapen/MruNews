@@ -122,7 +122,7 @@ int id gridview 0x7f060009
 int id headerImageView 0x7f06000d
 int id listViewArticle 0x7f060010
 int id lv_submenu 0x7f060022
-int id main_linearlayout 0x7f06001f
+int id mainLVLayout 0x7f06001f
 int id manualOnly 0x7f060004
 int id popup 0x7f060023
 int id pullDownFromTop 0x7f060005

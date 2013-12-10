@@ -16,7 +16,7 @@
 
     <string name="linkArticle">Link to article</string>
 
-    <string name="butLinkWeb">Link to web</string>
+    <string name="butLinkWeb">Web View</string>
     
     <dimen name="actionBarText">17dp</dimen>
 </resources>

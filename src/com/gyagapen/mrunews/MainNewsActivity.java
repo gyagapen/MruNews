@@ -133,9 +133,11 @@ public class MainNewsActivity extends Activity implements Runnable {
 		HttpResponseCache cache = HttpResponseCache.getInstalled();
 		if (cache != null) {
 			try {
-				cache.delete();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				if(cache != null)
+				{
+					cache.flush();
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			;

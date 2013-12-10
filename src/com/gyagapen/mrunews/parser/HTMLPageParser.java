@@ -121,24 +121,23 @@ public class HTMLPageParser {
 		artContent.setImageLink(getImageFromLink(linkToParse,
 				StaticValues.LEXPRESS_CODE, doc));
 
-		//intro content
-		Elements ContentElements = doc.select(".field-name-body div.field-item p");
+		// intro content
+		Elements ContentElements = doc
+				.select(".field-name-body div.field-item p");
 		String content = "";
 		for (int i = 0; i < ContentElements.size(); i++) {
 
 			content += System.getProperty("line.separator")
 					+ ContentElements.get(i).text();
 		}
-		
-		
-		//body content
+
+		// body content
 		ContentElements = doc.select(".field-name-body div.field-item div");
 		for (int i = 0; i < ContentElements.size(); i++) {
 
 			content += System.getProperty("line.separator")
 					+ ContentElements.get(i).text();
 		}
-		
 
 		artContent.setContent(content);
 
@@ -197,19 +196,14 @@ public class HTMLPageParser {
 
 		Elements ContentElements = doc.select("div.itemFullText");
 		String content = intro;
-		
-		/*for(int i=0;i<ContentElements.size();i++)
-		{
-			content = "#SPACE#" + ContentElements.get(i).html();
-		}*/
-		
+
 		content += "#SPACE#" + ContentElements.html();
 
 		// add breaklines
 		Pattern p = Pattern.compile("<br />");
 		Matcher matcher = p.matcher(content);
 		content = matcher.replaceAll("#SPACE#");
-		
+
 		Pattern parah = Pattern.compile("<p>");
 		Matcher matcherParah = parah.matcher(content);
 		content = matcherParah.replaceAll("#SPACE#");
@@ -220,7 +214,6 @@ public class HTMLPageParser {
 		Matcher spaceMatcher = paragraph.matcher(content);
 		content = spaceMatcher.replaceAll(System.getProperty("line.separator")
 				+ System.getProperty("line.separator"));
-		
 
 		artContent.setContent(content);
 
@@ -230,8 +223,40 @@ public class HTMLPageParser {
 		String title = TitleElement.text();
 		artContent.setTitle(title);
 
+		
+		//retrieve comments link
+		//Element CommentLinkElement = doc.select("div.disqus_thread iframe").first();
+		//String commentLink = CommentLinkElement.attr("src").toString();
+		
 		// count number of comments
-		int commentCount = doc.select("div.post-body header span").size();
+		int commentCount = doc.select("li.post").size();
+
+		// retrieve each comment
+		for (int j = 0; j < commentCount; j++) {
+
+			ArticleComment artComment = new ArticleComment();
+
+			// comments - title (replaced by author as no title exists)
+			Element ComTitleElement = doc.select("li.post span.author publisher-anchor-color a").get(j);
+			String titleComment = ComTitleElement.text();
+			artComment.setTitle(titleComment);
+
+			// comments - Date & Author
+			Element ComAuthDateElement = doc.select("div#comments footer").get(
+					j);
+			String dateAuthComment = ComAuthDateElement.text();
+			String authorComment = dateAuthComment;
+			artComment.setAuthor(authorComment);
+
+			// comment content
+			Element commentContentElement = doc.select(
+					"div#comments div.field-items p").get(j);
+			String commentElement = commentContentElement.text();
+			artComment.setContent(commentElement);
+
+			// add to list of comment
+			artContent.addComment(artComment);
+		}
 
 		return artContent;
 	}
@@ -274,7 +299,7 @@ public class HTMLPageParser {
 		artContent.setTitle(title);
 
 		// count number of comments
-		int commentCount = doc.select("div.post-body header span").size();
+		int commentCount = doc.select("li.post").size();
 
 		return artContent;
 	}
@@ -297,7 +322,7 @@ public class HTMLPageParser {
 				imageLink = imgElement.attr("src").toString();
 			} else if (newsCode.equals(StaticValues.LEXPRESS_CODE)) {
 				// get image
-				Element imgElement = doc.select("img[src]").first();
+				Element imgElement = doc.select("div.field-items img[src]").first();
 				imageLink = imgElement.attr("src").toString();
 
 			} else if (newsCode.equals(StaticValues.DEFI_PLUS_CODE)) {
